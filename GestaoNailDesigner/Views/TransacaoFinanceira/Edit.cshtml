@@ -1,79 +1,98 @@
 @model GestaoNailDesigner.Models.TransacaoFinanceira
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Transação";
 }
 
-<h1>Edit</h1>
-
-<h4>TransacaoFinanceira</h4>
+<h1>Editar</h1>
+<h4>Transação Financeira</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+
             <div class="form-group">
                 <label asp-for="Descricao" class="control-label"></label>
                 <input asp-for="Descricao" class="form-control" />
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Valor" class="control-label"></label>
                 <input asp-for="Valor" class="form-control" />
                 <span asp-validation-for="Valor" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="CategoriaId" class="control-label"></label>
-                <input asp-for="CategoriaId" class="form-control" />
+                <label asp-for="CategoriaId" class="control-label">Categoria</label>
+                <select asp-for="CategoriaId" class="form-control select-search" asp-items="ViewBag.CategoriaId">
+                    <option value="">-- Selecione a Categoria --</option>
+                </select>
                 <span asp-validation-for="CategoriaId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Categoria" class="control-label"></label>
-                <input asp-for="Categoria" class="form-control" />
-                <span asp-validation-for="Categoria" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Data" class="control-label"></label>
                 <input asp-for="Data" class="form-control" />
                 <span asp-validation-for="Data" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="FormaPagamento" class="control-label"></label>
-                <input asp-for="FormaPagamento" class="form-control" />
+                <label asp-for="FormaPagamento" class="control-label">Forma de Pagamento</label>
+                <select asp-for="FormaPagamento" class="form-control">
+                    <option value="">-- Selecione --</option>
+                    <option value="Pix">Pix</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Cartão de Crédito">Cartão de Crédito</option>
+                    <option value="Cartão de Débito">Cartão de Débito</option>
+                </select>
                 <span asp-validation-for="FormaPagamento" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="AgendamentoId" class="control-label"></label>
-                <input asp-for="AgendamentoId" class="form-control" />
+                <label asp-for="AgendamentoId" class="control-label">Agendamento (Opcional)</label>
+                <select asp-for="AgendamentoId" class="form-control select-search" asp-items="ViewBag.AgendamentoId">
+                    <option value="">-- Nenhum Agendamento --</option>
+                </select>
                 <span asp-validation-for="AgendamentoId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Agendamento" class="control-label"></label>
-                <input asp-for="Agendamento" class="form-control" />
-                <span asp-validation-for="Agendamento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PacoteClienteId" class="control-label"></label>
-                <input asp-for="PacoteClienteId" class="form-control" />
+                <label asp-for="PacoteClienteId" class="control-label">Pacote (Opcional)</label>
+                <select asp-for="PacoteClienteId" class="form-control select-search" asp-items="ViewBag.PacoteClienteId">
+                    <option value="">-- Nenhum Pacote --</option>
+                </select>
                 <span asp-validation-for="PacoteClienteId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PacoteCliente" class="control-label"></label>
-                <input asp-for="PacoteCliente" class="form-control" />
-                <span asp-validation-for="PacoteCliente" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="mt-2">
+    <a asp-action="Index">Voltar para a Lista</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select-search').select2({
+                placeholder: "Clique ou digite para buscar...",
+                language: "pt-BR",
+                allowClear: true
+            });
+        });
+    </script>
 }

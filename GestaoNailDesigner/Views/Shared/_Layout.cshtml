@@ -21,10 +21,31 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Início</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Agendamento" asp-action="Index">Agenda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cliente" asp-action="Index">Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TransacaoFinanceira" asp-action="Index">Financeiro</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cadastros
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Servico" asp-action="Index">Serviços</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="Index">Categorias (Financeiro)</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Pacote" asp-action="Index">Pacotes</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Curso" asp-action="Index">Cursos</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Aluna" asp-action="Index">Alunas</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="InscricaoCurso" asp-action="Index">Matrículas</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

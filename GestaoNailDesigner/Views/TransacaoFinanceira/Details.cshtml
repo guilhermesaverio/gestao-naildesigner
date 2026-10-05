@@ -1,87 +1,67 @@
 @model GestaoNailDesigner.Models.TransacaoFinanceira
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes da Transação";
 }
 
-<h1>Details</h1>
+<h1>Detalhes</h1>
 
 <div>
-    <h4>TransacaoFinanceira</h4>
+    <h4>Transação Financeira</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Descricao)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Descricao)
         </dd>
-    </dl>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Valor)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Valor)
         </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoriaId)
+
+        <dt class="col-sm-2">
+            Categoria
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoriaId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Categoria.Nome)
         </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Categoria)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categoria)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Data)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Data)
         </dd>
-    </dl>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FormaPagamento)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FormaPagamento)
         </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AgendamentoId)
+
+        <dt class="col-sm-2">
+            Agendamento
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AgendamentoId)
+        <dd class="col-sm-10">
+            @(Model.Agendamento != null ? Model.Agendamento.DataHoraInicio.ToString("dd/MM/yyyy HH:mm") : "Nenhum")
         </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Agendamento)
+
+        <dt class="col-sm-2">
+            Pacote
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Agendamento)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PacoteClienteId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PacoteClienteId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PacoteCliente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PacoteCliente)
+        <dd class="col-sm-10">
+            @(Model.PacoteCliente != null ? Model.PacoteCliente.Id.ToString() : "Nenhum")
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar</a> |
+    <a asp-action="Index">Voltar para a Lista</a>
 </div>

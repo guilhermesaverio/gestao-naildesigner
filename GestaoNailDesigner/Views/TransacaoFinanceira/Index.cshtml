@@ -1,89 +1,44 @@
 @model IEnumerable<GestaoNailDesigner.Models.TransacaoFinanceira>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de Transações";
 }
 
-<h1>Index</h1>
+<h1>Transações Financeiras</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Nova Transação</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Valor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoriaId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Data)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FormaPagamento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AgendamentoId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Agendamento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PacoteClienteId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PacoteCliente)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Descricao)</th>
+            <th>@Html.DisplayNameFor(model => model.Valor)</th>
+            <th>Categoria</th>
+            <th>@Html.DisplayNameFor(model => model.Data)</th>
+            <th>@Html.DisplayNameFor(model => model.FormaPagamento)</th>
+            <th>Agendamento</th>
+            <th>Pacote</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Valor)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.CategoriaId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Categoria)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Data)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FormaPagamento)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.AgendamentoId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Agendamento)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PacoteClienteId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PacoteCliente)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
+                <td>@Html.DisplayFor(modelItem => item.Valor)</td>
+                <td>@Html.DisplayFor(modelItem => item.Categoria.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Data)</td>
+                <td>@Html.DisplayFor(modelItem => item.FormaPagamento)</td>
+                <td>@(item.Agendamento != null ? item.Agendamento.DataHoraInicio.ToString("dd/MM/yyyy HH:mm") : "Nenhum")</td>
+                <td>@(item.PacoteCliente != null ? item.PacoteCliente.Id.ToString() : "Nenhum")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Excluir</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

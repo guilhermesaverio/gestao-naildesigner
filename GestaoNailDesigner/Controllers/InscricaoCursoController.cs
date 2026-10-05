@@ -1,150 +1,144 @@
-
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoNailDesigner.Models;
 using GestaoNailDesigner.Data;
 
-public class InscricaoCursoController : Controller
+namespace GestaoNailDesigner.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public InscricaoCursoController(ApplicationDbContext context)
+    public class InscricaoCursoController : Controller
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
 
-    // GET: INSCRICAOCURSOS
-    public async Task<IActionResult> Index()    
-    {
-        return View(await _context.InscricoesCursos.ToListAsync());
-    }
-
-    // GET: INSCRICAOCURSOS/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
+        public InscricaoCursoController(ApplicationDbContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        var inscricaocurso = await _context.InscricoesCursos
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (inscricaocurso == null)
+        // GET: InscricaoCurso
+        public async Task<IActionResult> Index()
         {
-            return NotFound();
+            var inscricoes = _context.InscricoesCursos
+                .Include(i => i.Aluna)
+                .Include(i => i.Curso);
+
+            return View(await inscricoes.ToListAsync());
         }
 
-        return View(inscricaocurso);
-    }
-
-    // GET: INSCRICAOCURSOS/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: INSCRICAOCURSOS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,AlunaId,Aluna,CursoId,Curso,DescontoPercentual,DescontoValor,ValorFinal,DataInicio,DataFim,StatusPagamento,DataInscricao")] InscricaoCurso inscricaocurso)
-    {
-        if (ModelState.IsValid)
+        // GET: InscricaoCurso/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            _context.Add(inscricaocurso);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(inscricaocurso);
-    }
+            if (id == null) return NotFound();
 
-    // GET: INSCRICAOCURSOS/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
+            var inscricaocurso = await _context.InscricoesCursos
+                .Include(i => i.Aluna)
+                .Include(i => i.Curso)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (inscricaocurso == null) return NotFound();
+
+            return View(inscricaocurso);
         }
 
-        var inscricaocurso = await _context.InscricoesCursos.FindAsync(id);
-        if (inscricaocurso == null)
+        // GET: InscricaoCurso/Create
+        public IActionResult Create()
         {
-            return NotFound();
-        }
-        return View(inscricaocurso);
-    }
-
-    // POST: INSCRICAOCURSOS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,AlunaId,Aluna,CursoId,Curso,DescontoPercentual,DescontoValor,ValorFinal,DataInicio,DataFim,StatusPagamento,DataInscricao")] InscricaoCurso inscricaocurso)
-    {
-        if (id != inscricaocurso.Id)
-        {
-            return NotFound();
+            CarregarViewBags(); 
+            return View();
         }
 
-        if (ModelState.IsValid)
+        // POST: InscricaoCurso/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,AlunaId,CursoId,DescontoPercentual,DescontoValor,ValorFinal,DataInicio,DataFim,StatusPagamento,DataInscricao")] InscricaoCurso inscricaocurso)
         {
-            try
+            if (ModelState.IsValid)
             {
-                _context.Update(inscricaocurso);
+                _context.Add(inscricaocurso);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            CarregarViewBags(inscricaocurso);
+            return View(inscricaocurso);
+        }
+
+        // GET: InscricaoCurso/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var inscricaocurso = await _context.InscricoesCursos.FindAsync(id);
+            if (inscricaocurso == null) return NotFound();
+
+            CarregarViewBags(inscricaocurso);
+            return View(inscricaocurso);
+        }
+
+        // POST: InscricaoCurso/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,AlunaId,CursoId,DescontoPercentual,DescontoValor,ValorFinal,DataInicio,DataFim,StatusPagamento,DataInscricao")] InscricaoCurso inscricaocurso)
+        {
+            if (id != inscricaocurso.Id) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(inscricaocurso);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!InscricaoCursoExists(inscricaocurso.Id)) return NotFound();
+                    else throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            CarregarViewBags(inscricaocurso);
+            return View(inscricaocurso);
+        }
+
+        // GET: InscricaoCurso/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var inscricaocurso = await _context.InscricoesCursos
+                .Include(i => i.Aluna)
+                .Include(i => i.Curso)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (inscricaocurso == null) return NotFound();
+
+            return View(inscricaocurso);
+        }
+
+        // POST: InscricaoCurso/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            var inscricaocurso = await _context.InscricoesCursos.FindAsync(id);
+            if (inscricaocurso != null)
+            {
+                _context.InscricoesCursos.Remove(inscricaocurso);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!InscricaoCursoExists(inscricaocurso.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
             return RedirectToAction(nameof(Index));
         }
-        return View(inscricaocurso);
-    }
 
-    // GET: INSCRICAOCURSOS/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
+        private bool InscricaoCursoExists(int? id)
         {
-            return NotFound();
+            return _context.InscricoesCursos.Any(e => e.Id == id);
         }
 
-        var inscricaocurso = await _context.InscricoesCursos
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (inscricaocurso == null)
+        private void CarregarViewBags(InscricaoCurso inscricao = null)
         {
-            return NotFound();
+            ViewData["AlunaId"] = new SelectList(_context.Alunas, "Id", "Nome", inscricao?.AlunaId);
+            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Nome", inscricao?.CursoId);
         }
-
-        return View(inscricaocurso);
-    }
-
-    // POST: INSCRICAOCURSOS/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? id)
-    {
-        var inscricaocurso = await _context.InscricoesCursos.FindAsync(id);
-        if (inscricaocurso != null)
-        {
-            _context.InscricoesCursos.Remove(inscricaocurso);
-        }
-
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool InscricaoCursoExists(int? id)
-    {
-        return _context.InscricoesCursos.Any(e => e.Id == id);
     }
 }

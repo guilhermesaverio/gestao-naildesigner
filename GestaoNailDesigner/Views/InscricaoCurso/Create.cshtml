@@ -1,12 +1,11 @@
 @model GestaoNailDesigner.Models.InscricaoCurso
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nova Matrícula";
 }
 
-<h1>Create</h1>
-
-<h4>InscricaoCurso</h4>
+<h1>Nova Matrícula</h1>
+<h4>Inscrição de Curso</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,27 +13,19 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="AlunaId" class="control-label"></label>
-                <input asp-for="AlunaId" class="form-control" />
+                <label asp-for="AlunaId" class="control-label">Aluna</label>
+                <select asp-for="AlunaId" class="form-control select-search" asp-items="ViewBag.AlunaId">
+                    <option value="">-- Selecione a Aluna --</option>
+                </select>
                 <span asp-validation-for="AlunaId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Aluna" class="control-label"></label>
-                <input asp-for="Aluna" class="form-control" />
-                <span asp-validation-for="Aluna" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="CursoId" class="control-label"></label>
-                <input asp-for="CursoId" class="form-control" />
+                <label asp-for="CursoId" class="control-label">Curso</label>
+                <select asp-for="CursoId" class="form-control select-search" asp-items="ViewBag.CursoId">
+                    <option value="">-- Selecione o Curso --</option>
+                </select>
                 <span asp-validation-for="CursoId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Curso" class="control-label"></label>
-                <input asp-for="Curso" class="form-control" />
-                <span asp-validation-for="Curso" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -69,7 +60,7 @@
 
             <div class="form-group">
                 <label asp-for="StatusPagamento" class="control-label"></label>
-                <input asp-for="StatusPagamento" class="form-control" />
+                <select asp-for="StatusPagamento" class="form-control" asp-items="Html.GetEnumSelectList<GestaoNailDesigner.Models.StatusPagamento>()"></select>
                 <span asp-validation-for="StatusPagamento" class="text-danger"></span>
             </div>
 
@@ -78,13 +69,34 @@
                 <input asp-for="DataInscricao" class="form-control" />
                 <span asp-validation-for="DataInscricao" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="mt-2">
+    <a asp-action="Index">Voltar para a Lista</a>
 </div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select-search').select2({
+                placeholder: "Clique ou digite para buscar...",
+                language: "pt-BR",
+                allowClear: true
+            });
+        });
+    </script>
+}
